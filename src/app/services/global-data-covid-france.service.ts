@@ -15,11 +15,8 @@ export class GlobalDataCovidFranceService {
 
   urlDataGouv = 'https://www.data.gouv.fr/en/datasets/r/d2671c6c-c0eb-4e12-b69a-8e8f87fc224c';
 
-  getInfoGlobalFrance(){
-     return this.httpclient.get<DonneesCovid[]>(this.urlDataGouv);
-  }
 
-  getNumberOfDeathFranceByDate(){
+  getInfosCovidDataFrance(){
     return this.httpclient.get<DonneesCovid[]>(this.urlDataGouv)
   }
 }

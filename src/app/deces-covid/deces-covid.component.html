@@ -1,8 +1,5 @@
-<div>Death in France:
-  <ul *ngFor="let data of death">
-    <li> {{data.date}}</li>
-    <li> {{data.deces}}</li>
-    <li> {{data.gueris}}</li>
-    <li> {{data.casConfirmes}}</li>
-  </ul>
+<div class="tab" >Death in France:
+  <div>   date : {{death[death.length-1].date}} </div>
+  <div>     deaths : {{death[death.length-1].deces ? death[death.length-1].deces : noData}} </div>
 </div>
+<div id="containerDeath"></div>

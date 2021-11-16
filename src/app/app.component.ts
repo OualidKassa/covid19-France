@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {GlobalDataCovidFranceService} from "./services/global-data-covid-france.service";
-import {DonneesCovid} from "./model/donnees-covid";
+import {DateAdapter} from "@angular/material/core";
+
 
 @Component({
   selector: 'app-root',
@@ -10,38 +11,16 @@ import {DonneesCovid} from "./model/donnees-covid";
 export class AppComponent implements OnInit{
   title = 'covid-webnet-angular';
 
-  dataCovid: DonneesCovid[] = [{
-    casConfirmes: 0,
-  deces: 0,
-  decesEhpad: 0,
-  reanimation: 0,
-  hospitalises: 0,
-  gueris: 0,
-  date: '',
-  nouvellesHospitalisations: 0,
-  nouvellesReanimations: 0,
-  nouvellesPremieresInjections: 0,
-  cumulPremieresInjections: 0,
-  stockNombreTotalDoses: 0,
-  stockNombreDosesPfizer: 0,
-  stockNombreDosesModerna: 0,
-  livraisonsCumulNombreTotalDoses: 0,
-  livraisonsCumulNombreDosesPfizer: 0,
-  livraisonsCumulNombreDosesModerna: 0,
-  totalPrisesRendezVousSemaine: 0,
-  prisesRendezVousSemaineRang1: 0,
-  prisesRendezVousSemaineRang2: 0,
-  stockEhpadNombreDosesPfizer: 0
-  }];
-  dataNotProvided = 'donnée non fourni';
+  dataCovidGlobal: any;
+  date = '2020-03-10'
 
 
   constructor(private globalData: GlobalDataCovidFranceService) {
   }
 
   ngOnInit(): void {
-    this.globalData.getInfoGlobalFrance().subscribe((data: DonneesCovid[]) => {
-     this.dataCovid = [...data];
-   });
+    this.globalData.getInfosCovidDataFrance().subscribe(
+      data => this.dataCovidGlobal = data.filter(
+        d => Date.parse(d.date) <= Date.parse(this.date)));
   }
 }
