@@ -1,10 +1,14 @@
 .tab {
-  width: 80%;
-  height: 80%;
+  width: auto;
+  height: auto;
   border:2px solid #fff;
   box-shadow: 10px 10px 5px #4222cc;
   -moz-box-shadow: 10px 10px 5px #4222cc;
   -webkit-box-shadow: 10px 10px 5px #4222cc;
   -khtml-box-shadow: 10px 10px 5px #4222cc;
   margin-bottom: auto;
+}
+
+#containerDeath{
+  width: 100%;
 }

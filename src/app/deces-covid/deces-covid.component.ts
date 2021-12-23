@@ -1,69 +1,70 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {GlobalDataCovidFranceService} from "../services/global-data-covid-france.service";
-import {DonneesCovid} from "../model/donnees-covid";
+import { Component, Input, OnInit } from '@angular/core';
+import { GlobalDataCovidFranceService } from '../services/global-data-covid-france.service';
+import { DonneesCovid } from '../model/donnees-covid';
 import * as Highcharts from 'highcharts';
-import {DATA_NOT_PROVID} from "../utils/utils";
-import {pipe} from "rxjs";
-import {map} from "rxjs/operators";
+import { DATA_NOT_PROVID } from '../utils/utils';
 
 @Component({
   selector: 'app-deces-covid',
   templateUrl: './deces-covid.component.html',
-  styleUrls: ['./deces-covid.component.css']
+  styleUrls: ['./deces-covid.component.css'],
 })
 export class DecesCovidComponent implements OnInit {
-
   @Input() death: DonneesCovid[] = [];
   noData = DATA_NOT_PROVID;
 
-  date=  '2020-08-16';
+  date = '2021-12-22';
+
+  number_death_covid_data: number[] = [];
+  deathPerDay: number[] = [];
 
   public options: any = {
     Chart: {
       type: 'area',
-      height: 500
+      height: 400,
+      width: 200,
     },
     title: {
-      text: 'Evolution des dèces du covid-19'
+      text: 'Evolution des dèces du covid-19',
     },
     credits: {
-      enabled: false
+      enabled: false,
     },
     xAxis: {
       categories: [],
       tickmarkPlacement: 'on',
       title: {
-        enabled: false
-      }
+        enabled: false,
+      },
     },
     series: [
       {
-      name: 'Décès',
-      data: []
-    }
-    ]
-  }
+        name: 'Décès',
+        data: [],
+      },
+    ],
+  };
 
-
-  constructor(private globalData: GlobalDataCovidFranceService) {
-  }
-
+  constructor(private globalData: GlobalDataCovidFranceService) {}
 
   ngOnInit(): void {
-
-    this.globalData.getInfosCovidDataFrance().subscribe(data => {
+    this.globalData.getInfosCovidDataFrance().subscribe((data) => {
       const date_data: string[] = [];
-      const number_death_covid_data: number[] = [];
-      data.filter(d => Date.parse(d.date) <= Date.parse(this.date))
-      .forEach(row => {
-       date_data.push(row.date);
-       number_death_covid_data.push(row.deces)
-      });
+      data
+        .filter((d) => Date.parse(d.date) <= Date.parse(this.date))
+        .forEach((row) => {
+          date_data.push(row.date);
+          this.number_death_covid_data.push(row.deces);
+        });
 
-      this.options.series[0]['data'] = number_death_covid_data;
+      this.options.series[0]['data'] = this.number_death_covid_data.map(
+        (d, e, t) => d - t[e - 1]
+      );
+      this.deathPerDay = this.number_death_covid_data.map(
+        (d, e, t) => d - t[e - 1]
+      );
       this.options.xAxis.categories = date_data;
       Highcharts.chart('containerDeath', this.options);
     });
-
   }
 }
